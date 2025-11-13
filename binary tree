@@ -1,0 +1,52 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *left, *right;
+    Node(int v) { data = v; left = right = NULL; }
+};
+
+Node* insert(Node* root, int val) {
+    if (!root) return new Node(val);
+    if (val < root->data) root->left = insert(root->left, val);
+    else if (val > root->data) root->right = insert(root->right, val);
+    return root;
+}
+
+Node* minValue(Node* root) {
+    while (root && root->left) root = root->left;
+    return root;
+}
+
+Node* deleteNode(Node* root, int val) {
+    if (!root) return root;
+    if (val < root->data) root->left = deleteNode(root->left, val);
+    else if (val > root->data) root->right = deleteNode(root->right, val);
+    else {
+        if (!root->left) return root->right;
+        else if (!root->right) return root->left;
+        Node* temp = minValue(root->right);
+        root->data = temp->data;
+        root->right = deleteNode(root->right, temp->data);
+    }
+    return root;
+}
+
+void inorder(Node* r){ if(r){ inorder(r->left); cout<<r->data<<" "; inorder(r->right);} }
+void preorder(Node* r){ if(r){ cout<<r->data<<" "; preorder(r->left); preorder(r->right);} }
+void postorder(Node* r){ if(r){ postorder(r->left); postorder(r->right); cout<<r->data<<" ";} }
+
+int main() {
+    Node* root = NULL;
+    root = insert(root, 50);
+    insert(root, 30); insert(root, 70);
+    insert(root, 20); insert(root, 40); insert(root, 60); insert(root, 80);
+
+    cout << "Inorder: "; inorder(root);
+    cout << "\nPreorder: "; preorder(root);
+    cout << "\nPostorder: "; postorder(root);
+
+    root = deleteNode(root, 20);
+    cout << "\n\nAfter deleting 20, Inorder: "; inorder(root);
+}
