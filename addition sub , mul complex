@@ -1,0 +1,26 @@
+#include <iostream>
+using namespace std;
+
+class Complex {
+public:
+    int r, i;
+    Complex(int a=0, int b=0){ r=a; i=b; }
+
+    Complex operator+(Complex c){ return Complex(r+c.r, i+c.i); }
+    Complex operator-(Complex c){ return Complex(r-c.r, i-c.i); }
+    Complex operator*(Complex c){
+        return Complex(r*c.r - i*c.i, r*c.i + i*c.r);
+    }
+};
+
+int main() {
+    Complex c1(3, 2), c2(1, 7);
+
+    Complex add = c1 + c2;
+    Complex sub = c1 - c2;
+    Complex mul = c1 * c2;
+
+    cout << "Addition: " << add.r << "+i" << add.i << endl;
+    cout << "Subtraction: " << sub.r << "+i" << sub.i << endl;
+    cout << "Multiplication: " << mul.r << "+i" << mul.i << endl;
+}
